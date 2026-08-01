@@ -29,7 +29,7 @@ class Hand:
         return any(card.name for card in self._cards if card.name == "Serum Powder")
 
     def return_card(self, position: int) -> Card:
-        return self._cards.pop(position + 1)
+        return self._cards.pop(position - 1)
 
     def __len__(self) -> int:
         return len(self._cards)
@@ -69,5 +69,6 @@ class Deck:
 
     def __len__(self) -> int:
         return len(self._cards)
-        
-        
+
+    def get_num_exiled(self) -> int:
+        return len(self._exiled)
