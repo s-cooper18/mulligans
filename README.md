@@ -3,6 +3,8 @@
 This repo is a simple mulligan simulator that handles the card "[Serum Powder](https://scryfall.com/card/ima/228/serum-powder)".
 This has been made primarily for myself because I had not found an appropriate way to practise certain decklists smoothly via existing mulligan simulators.
 
+This is a work in progress, made primarily for myself. Use at your own risk.
+
 ## Installation
 
 - Ensure Python is installed (example, via [pyenv](https://github.com/pyenv/pyenv))
