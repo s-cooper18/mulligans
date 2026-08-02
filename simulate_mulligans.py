@@ -1,9 +1,13 @@
+from collections.abc import Callable
+
 from src import dataclasses, deck_loader
 
 HAND_SIZE = 7
 
 
-def maybe_return_cards(hand: dataclasses.Hand, mulligans: int) -> None:
+def maybe_return_cards(
+    hand: dataclasses.Hand, mulligans: int, print_func: Callable
+) -> None:
     num_cards_can_keep = HAND_SIZE - mulligans
     while len(hand) > num_cards_can_keep:
         value = input("Choose card to put back:")
@@ -11,23 +15,19 @@ def maybe_return_cards(hand: dataclasses.Hand, mulligans: int) -> None:
             option = int(value)
             card_to_return = hand.return_card(option)
         except ValueError, IndexError:
-            print("Invalid value\n")
+            print_func("Invalid value\n")
             continue
 
-        print(f"Returned {card_to_return}")
+        print_func(f"Returned {card_to_return}")
 
 
-if __name__ == "__main__":
-    filepath = "tests/sample_data/decklist.txt"
-
-    deck = deck_loader.parse_decklist(filepath)
+def run_mulligans(deck: dataclasses.Deck, print_func: Callable) -> None:
     mulligans = 0
-
     hand = deck.draw_cards(7)
 
     while True:
-        print(hand.format_choices())
-        print(
+        print_func(hand.format_choices())
+        print_func(
             f"\nHave taken {mulligans} mulligans(s), {deck.get_num_exiled()} card(s) in exile\n"
         )
         value = input(
@@ -35,24 +35,31 @@ if __name__ == "__main__":
         )
 
         if value not in ("s", "m", "k"):
-            print("Invalid input\n")
+            print_func("Invalid input\n")
             continue
 
         match value:
             case "s":
                 hand = deck.serum_powder(hand._cards)
-                maybe_return_cards(hand, mulligans)
-                print(f"Exiled {len(hand._cards)} cards\n")
+                maybe_return_cards(hand, mulligans, print_func)
+                print_func(f"Exiled {len(hand._cards)} cards\n")
             case "m":
                 hand = deck.mulligan(hand._cards)
                 mulligans += 1
-                print("Mulligan\n")
+                print_func("Mulligan\n")
             case "k":
-                maybe_return_cards(hand, mulligans)
+                maybe_return_cards(hand, mulligans, print_func)
 
-                print(
+                print_func(
                     f"Kept hand after {mulligans} mulligans with {deck.get_num_exiled()} cards in exile.\n"
                 )
                 break
             case _:
                 continue
+
+
+if __name__ == "__main__":
+    filepath = "tests/sample_data/decklist.txt"
+    deck = deck_loader.parse_decklist(filepath)
+
+    run_mulligans(deck, print_func=print)
