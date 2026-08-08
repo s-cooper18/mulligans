@@ -53,6 +53,7 @@ class Deck:
 
     def mulligan(self, hand: list[Card]) -> Hand:
         self.cards.extend(hand)
+        self.shuffle()
         return self.draw_cards(STANDARD_HAND_SIZE)
 
     def serum_powder(
