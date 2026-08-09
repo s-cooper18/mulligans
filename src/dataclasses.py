@@ -37,38 +37,36 @@ class Hand:
 
 @attrs.define
 class Deck:
-    _cards: list[Card] = attrs.field(factory=list)
-    _exiled: list[Card] = attrs.field(factory=list)
+    cards: list[Card] = attrs.field(factory=list)
+    exiled: list[Card] = attrs.field(factory=list)
 
     def add_cards(self, cards: list[Card]) -> None:
-        self._cards.extend(cards)
+        self.cards.extend(cards)
 
     def shuffle(self) -> None:
-        random.shuffle(self._cards)
+        random.shuffle(self.cards)
 
     def draw_cards(self, num_cards: int) -> Hand:
-        hand = self._cards[:num_cards]
-        self._cards = self._cards[num_cards:]
+        hand = self.cards[:num_cards]
+        self.cards = self.cards[num_cards:]
         return Hand(hand)
 
     def mulligan(self, hand: list[Card]) -> Hand:
-        self._cards.extend(hand)
+        self.cards.extend(hand)
+        self.shuffle()
         return self.draw_cards(STANDARD_HAND_SIZE)
 
     def serum_powder(
         self, cards_to_exile: list[Card], cards_to_bottom: list[Card] | None = None
     ) -> Hand:
         num_cards_to_draw = len(cards_to_exile)
-
-        self._exiled.extend(cards_to_exile)
-
+        self.exiled.extend(cards_to_exile)
         if cards_to_bottom:
-            self._cards.extend(cards_to_bottom)
-
+            self.cards.extend(cards_to_bottom)
         return self.draw_cards(num_cards_to_draw)
 
     def __len__(self) -> int:
-        return len(self._cards)
+        return len(self.cards)
 
     def get_num_exiled(self) -> int:
-        return len(self._exiled)
+        return len(self.exiled)

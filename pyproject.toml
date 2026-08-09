@@ -12,4 +12,5 @@ dependencies = ["attrs", "mtg-parser==0.0.1a55"]
 dev = [
     "mypy",
     "ruff",
+    "pytest",
 ]
