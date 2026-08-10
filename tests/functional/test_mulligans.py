@@ -31,11 +31,11 @@ def test_serum_powder() -> None:
     assert len(hand) == 7
     assert len(deck) == 53
 
-    hand = deck.serum_powder(hand._cards)
+    hand = deck.serum_powder(hand)
     assert len(hand) == 7
     assert len(deck) == 46
 
-    hand = deck.serum_powder(hand._cards)
+    hand = deck.serum_powder(hand)
     assert len(hand) == 7
     assert len(deck) == 39
 
@@ -50,9 +50,7 @@ def test_serum_powder_after_mulligan() -> None:
     assert len(deck) == 53
 
     bottom = hand._cards[0]
-    exile = hand._cards[1:]
-
-    hand = deck.serum_powder(cards_to_exile=exile, cards_to_bottom=[bottom])
+    hand = deck.serum_powder(hand=hand, items_to_bottom={0})
     assert len(hand) == 6
 
     assert deck.cards[-1] == bottom
