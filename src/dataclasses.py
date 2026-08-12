@@ -1,3 +1,4 @@
+from collections.abc import Collection
 import random
 
 import attrs
@@ -33,6 +34,10 @@ class Hand:
 
     def __len__(self) -> int:
         return len(self._cards)
+    
+    def get_card(self, which: int) -> Card:
+        assert which in range(len(self._cards))
+        return self._cards[which]
 
 
 @attrs.define
@@ -57,16 +62,36 @@ class Deck:
         return self.draw_cards(STANDARD_HAND_SIZE)
 
     def serum_powder(
-        self, cards_to_exile: list[Card], cards_to_bottom: list[Card] | None = None
+        self, hand: Hand, items_to_bottom: set[int] | None = None
     ) -> Hand:
-        num_cards_to_draw = len(cards_to_exile)
-        self.exiled.extend(cards_to_exile)
-        if cards_to_bottom:
-            self.cards.extend(cards_to_bottom)
-        return self.draw_cards(num_cards_to_draw)
+        possible_indices = set(range(len(hand)))
+        
+        if not items_to_bottom:
+            self.exile_cards(hand._cards)
+            return self.draw_cards(7)
+            
+        # are all valid choices
+        assert items_to_bottom.intersection(possible_indices) == items_to_bottom
+
+        cards_to_exile = {hand.get_card(i) for i in possible_indices.difference(items_to_bottom)} if items_to_bottom else hand._cards
+
+        cards_to_bottom = {hand.get_card(i) for i in items_to_bottom}
+        self.return_cards(cards_to_bottom)
+            
+        self.exile_cards(cards_to_exile)
+            
+        return self.draw_cards(len(cards_to_exile))
 
     def __len__(self) -> int:
         return len(self.cards)
 
     def get_num_exiled(self) -> int:
         return len(self.exiled)
+    
+    def return_cards(self, cards: set[Card]) -> None:
+        cards_to_return = list(cards)
+        random.shuffle(cards_to_return)
+        self.cards.extend(cards_to_return)
+        
+    def exile_cards(self, cards: Collection[Card]) -> None:
+        self.exiled.extend(cards)
