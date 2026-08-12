@@ -1,3 +1,4 @@
+import argparse
 from collections.abc import Callable
 
 from src import dataclasses, deck_loader
@@ -62,7 +63,14 @@ def run_mulligans(deck: dataclasses.Deck, print_func: Callable) -> None:
 
 
 if __name__ == "__main__":
-    filepath = "tests/sample_data/decklist.txt"
-    deck = deck_loader.parse_decklist(filepath)
+    parser = argparse.ArgumentParser(
+        description="A mulligan simulator that handles serum powder."
+    )
+    parser.add_argument(
+        "decklist", help="A file in plain text that contains the decklist to be used."
+    )
+    args = parser.parse_args()
+
+    deck = deck_loader.parse_decklist(args.decklist)
 
     run_mulligans(deck, print_func=print)
