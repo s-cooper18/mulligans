@@ -2,9 +2,7 @@ from src import dataclasses
 
 
 def create_sample_deck() -> dataclasses.Deck:
-    return dataclasses.Deck(
-        cards=[dataclasses.Card(name=f"card {i}") for i in range(60)]
-    )
+    return dataclasses.Deck(cards=[dataclasses.Card(name=f"card {i}") for i in range(60)])
 
 
 def test_simple_path() -> None:

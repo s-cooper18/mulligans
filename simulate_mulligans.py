@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 from collections.abc import Callable
 
@@ -6,9 +8,7 @@ from src import dataclasses, deck_loader
 HAND_SIZE = 7
 
 
-def choose_cards_to_return(
-    hand: dataclasses.Hand, mulligans: int, print_func: Callable
-) -> set[int]:
+def choose_cards_to_return(hand: dataclasses.Hand, mulligans: int, print_func: Callable) -> set[int]:
     chosen = set()
     if mulligans == 0:
         return chosen
@@ -33,11 +33,10 @@ def run_mulligans(deck: dataclasses.Deck, print_func: Callable) -> None:
     while True:
         print_func(hand.format_choices())
         print_func(
-            f"\nHave taken {mulligans} mulligans(s), {deck.get_num_exiled()} card(s) in exile, {len(deck.cards)} in deck\n"
+            f"\nHave taken {mulligans} mulligans(s), {deck.get_num_exiled()} card(s) in "
+            " exile, {len(deck.cards)} in deck\n"
         )
-        value = input(
-            f"{'Serum (s), ' if hand.has_serum_powder() else ''}Mulligan (m) or Keep (k):"
-        )
+        value = input(f"{'Serum (s), ' if hand.has_serum_powder() else ''}Mulligan (m) or Keep (k):")
 
         if value not in ("s", "m", "k"):
             print_func("Invalid input\n")
@@ -63,12 +62,8 @@ def run_mulligans(deck: dataclasses.Deck, print_func: Callable) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="A mulligan simulator that handles serum powder."
-    )
-    parser.add_argument(
-        "decklist", help="A file in plain text that contains the decklist to be used."
-    )
+    parser = argparse.ArgumentParser(description="A mulligan simulator that handles serum powder.")
+    parser.add_argument("decklist", help="A file in plain text that contains the decklist to be used.")
     args = parser.parse_args()
 
     deck = deck_loader.parse_decklist(args.decklist)
