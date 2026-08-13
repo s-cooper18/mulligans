@@ -14,3 +14,30 @@ dev = [
     "ruff",
     "pytest",
 ]
+
+[tool.ruff]
+line-length = 112
+
+# Specify Python version for compatibility
+target-version = "py314"
+
+# Select rulesets to enforce
+# Common rule groups:
+#   E/F = Pycodestyle (errors & warnings)
+#   W = general warnings
+#   I = import sorting
+#   UP = pyupgrade rules (modernize code)
+#   N = naming conventions
+lint.select = ["E", "F", "W", "I", "UP"]
+
+# Exclude certain paths (like virtualenvs or migrations)
+exclude = ["venv", "__pycache__"]
+
+# Show fixes when applying --fix
+show-fixes = true
+
+# Respect .gitignore patterns
+respect-gitignore = true
+
+# Enable incremental mode (optional, speeds up re-runs)
+cache-dir = ".ruff_cache"
