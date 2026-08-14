@@ -12,10 +12,9 @@ This is a work in progress, made primarily for myself. Use at your own risk.
 - `pip install .` from root directory
 
 ## How to use
-Copy decklist content into `tests/sample_data/decklist.txt`
 
 Run
-`python3 -m simulate_mulligans`
+`briefcase dev -- {absolute path to your decklist}`
 
 Share your poor mulligan choices with friends!
 

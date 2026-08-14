@@ -2,3 +2,6 @@ build
 __pycache__
 *.egg-info
 .vscode
+.briefcase
+*.log
+*.dist-info
